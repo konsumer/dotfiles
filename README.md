@@ -1,12 +1,7 @@
 This is my dotfiles. YMMV.
 
-To use, install stow:
+If you want my full setup (on mac or linux):
 
 ```sh
-```
-# on mac
-brew install stow
-
-# on debian-like
-sudo apt install stow
+curl -sS https://raw.githubusercontent.com/konsumer/dotfiles/refs/heads/main/install.sh | bash
 ```

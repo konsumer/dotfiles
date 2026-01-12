@@ -16,7 +16,7 @@ case "$(uname)" in
     
     # Install packages with brew
     echo "Installing git and zsh..."
-    brew install git zsh neovim
+    brew install neovim oath-toolkit stow eza bat fzf
     ;;
     
   Linux)
@@ -26,24 +26,23 @@ case "$(uname)" in
     if command -v apt >/dev/null 2>&1; then
       echo "Using apt package manager"
       sudo apt update
-      sudo apt install -y git zsh neovim
+      sudo apt install -y git zsh neovim oathtool stow eza bat fzf
       
     elif command -v pacman >/dev/null 2>&1; then
       echo "Using pacman package manager"
-      sudo pacman -Sy --noconfirm git zsh neovim
+      sudo pacman -Sy --noconfirm git zsh neovim oathtool stow eza bat fzf
       
     elif command -v dnf >/dev/null 2>&1; then
       echo "Using dnf package manager"
-      sudo dnf install -y git zsh neovim
+      sudo dnf install -y git zsh neovim oathtool stow eza bat fzf
       
     elif command -v yum >/dev/null 2>&1; then
       echo "Using yum package manager"
-      sudo yum install -y git zsh neovim
+      sudo yum install -y git zsh neovim oathtool stow eza bat fzf
       
     elif command -v zypper >/dev/null 2>&1; then
       echo "Using zypper package manager"
-      sudo zypper install -y git zsh neovim
-      
+      sudo zypper install -y git zsh neovim oathtool stow eza bat fzf
     else
       echo "Error: No supported package manager found"
       exit 1
@@ -56,13 +55,48 @@ case "$(uname)" in
     ;;
 esac
 
-echo "Installation complete!"
+echo "Basic Installation complete!"
 
-echo "changing shell to zsh"
-chsh -s "$(which zsh)"
-
-
-echo "installing zsh plugins"
+echo "Installing zsh plugins"
 mkdir -p ~/.zsh
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting ~/.zsh/fast-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+echo "Installing starship"
+curl -sS https://starship.rs/install.sh | sh
+
+echo "Changing shell to zsh"
+chsh -s "$(which zsh)"
+
+echo "Installing rust"
+curl -Ss https://sh.rustup.rs | sh
+. "$HOME/.cargo/env"
+
+echo "Installing nvm (nodejs)"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+nvm install node
+nvm use node
+
+echo "Installing emscripten"
+sudo git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
+cd /opt/emsdk
+./emsdk install latest
+./emsdk activate latest
+source ./emsdk_env.sh
+
+echo "Setting up stowed dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_REPO="https://github.com/konsumer/dotfiles.git"
+if [ ! -d "$DOTFILES_DIR" ]; then
+  echo "Cloning dotfiles repository..."
+  git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+else
+  echo "Dotfiles directory already exists at $DOTFILES_DIR"
+  cd "$DOTFILES_DIR"
+  echo "Updating dotfiles..."
+  git pull
+fi
+cd "$DOTFILES_DIR"
+stow .
+
+

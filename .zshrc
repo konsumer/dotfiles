@@ -25,4 +25,7 @@ alias egrep='egrep --color'
 alias ls='eza --icons=auto'
 alias vim='nvim'
 alias vi='nvim'
+
+if ! command -v bat >/dev/null 2>&1; then
 alias bat="batcat"
+fi
