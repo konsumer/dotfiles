@@ -79,6 +79,11 @@ export NVM_DIR="$HOME/.nvm"
 nvm install node
 nvm use node
 
+echo "Setting up local python venv"
+export VENV_SHARED="${HOME}/.venv"
+python3 -m venv "${VENV_SHARED}"
+[ -s "${VENV_SHARED}/bin/activate" ] && \. "${VENV_SHARED}/bin/activate"
+
 echo "Installing emscripten"
 sudo git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
 cd /opt/emsdk
@@ -99,6 +104,6 @@ else
   git pull
 fi
 cd "$DOTFILES_DIR"
-stow .
+stow . --adopt
 
 
