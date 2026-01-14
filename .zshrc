@@ -26,6 +26,13 @@ alias ls='eza --icons=auto'
 alias vim='nvim'
 alias vi='nvim'
 
+# always bat for synhi cat
 if ! command -v bat >/dev/null 2>&1; then
-alias bat="batcat"
+	alias bat="batcat"
+fi
+
+# always mac-names for clipboard manipuation
+if command -v xclip >/dev/null 2>&1; then
+	alias pbcopy='xclip -selection clipboard'
+	alias pbpaste='xclip -selection clipboard -o'
 fi

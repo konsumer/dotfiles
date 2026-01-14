@@ -26,23 +26,23 @@ case "$(uname)" in
     if command -v apt >/dev/null 2>&1; then
       echo "Using apt package manager"
       sudo apt update
-      sudo apt install -y git zsh neovim oathtool stow eza bat fzf
+      sudo apt install -y git zsh neovim oathtool stow eza bat fzf xclip
       
     elif command -v pacman >/dev/null 2>&1; then
       echo "Using pacman package manager"
-      sudo pacman -Sy --noconfirm git zsh neovim oathtool stow eza bat fzf
+      sudo pacman -Sy --noconfirm git zsh neovim oathtool stow eza bat fzf xclip
       
     elif command -v dnf >/dev/null 2>&1; then
       echo "Using dnf package manager"
-      sudo dnf install -y git zsh neovim oathtool stow eza bat fzf
+      sudo dnf install -y git zsh neovim oathtool stow eza bat fzf xclip
       
     elif command -v yum >/dev/null 2>&1; then
       echo "Using yum package manager"
-      sudo yum install -y git zsh neovim oathtool stow eza bat fzf
+      sudo yum install -y git zsh neovim oathtool stow eza bat fzf xclip
       
     elif command -v zypper >/dev/null 2>&1; then
       echo "Using zypper package manager"
-      sudo zypper install -y git zsh neovim oathtool stow eza bat fzf
+      sudo zypper install -y git zsh neovim oathtool stow eza bat fzf xclip
     else
       echo "Error: No supported package manager found"
       exit 1
