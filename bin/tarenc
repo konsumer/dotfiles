@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Use this to create an encrypted tarball
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <input> <output>"
+    exit 1
+fi
+
+INPUT="$1"
+OUTPUT="$2"
+
+if [ ! -e "$INPUT" ]; then
+    echo "Error: $INPUT does not exist"
+    exit 1
+fi
+
+echo "Compressing and encrypting $INPUT..."
+tar -czf - "$INPUT" | openssl enc -aes-256-cbc -salt -pbkdf2 -out "$OUTPUT"
+
+if [ $? -eq 0 ]; then
+    echo "Successfully created encrypted archive: $OUTPUT"
+else
+    echo "Error during encryption"
+    exit 1
+fi

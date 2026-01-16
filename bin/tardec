@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Use this to extract an encrypted tarball
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <encrypted_file>"
+    exit 1
+fi
+
+INPUT="$1"
+
+if [ ! -f "$INPUT" ]; then
+    echo "Error: $INPUT does not exist"
+    exit 1
+fi
+
+echo "Decrypting and decompressing $INPUT..."
+openssl enc -aes-256-cbc -d -salt -pbkdf2 -in "$INPUT" | tar -xzv
+
+if [ $? -eq 0 ]; then
+    echo "Successfully decrypted and extracted archive"
+else
+    echo "Error during decryption"
+    exit 1
+fi
