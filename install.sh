@@ -5,6 +5,8 @@
 case "$(uname)" in
   Darwin)
     echo "Detected macOS"
+
+    FONT_DIR=~/Library/Fonts
     
     # Check if Homebrew is installed
     if ! command -v brew >/dev/null 2>&1; then
@@ -18,9 +20,12 @@ case "$(uname)" in
     echo "Installing git and zsh..."
     brew install neovim oath-toolkit stow eza bat fzf
     ;;
+
     
   Linux)
     echo "Detected Linux"
+
+    FONT_DIR=~/.local/share/fonts/
     
     # Detect package manager and install packages
     if command -v apt >/dev/null 2>&1; then
@@ -54,6 +59,18 @@ case "$(uname)" in
     exit 1
     ;;
 esac
+
+echo "Installing fonts"
+
+mkdir -p "${FONT_DIR}"
+cd /tmp
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip
+unzip FiraCode.zip
+cp FiraCodeNerdFont*.ttf "${FONT_DIR}"
+
+if command -v fc-cache >/dev/null 2>&1; then
+  fc-cache -fv "${FONT_DIR}"
+fi
 
 echo "Basic Installation complete!"
 
