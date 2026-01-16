@@ -11,7 +11,7 @@ I also included tardec/tarenc for saving secrets somewhere else, encrtpyed:
 ```sh
 # build file
 mkdir -p secrets
-cp -R ~/.ssh ~/.secrets secrets/
+cp -R ~/.ssh ~/.secrets secrets
 tarenc secrets /mnt/BACKUP/secrets.enc.tgz && rm -rf secrets
 
 # extract
