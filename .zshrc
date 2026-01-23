@@ -1,8 +1,14 @@
-# https://rushter.com/blog/zsh-shell/
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
+HISTDUP=erase # delete duplicate entries
+HISTFILE=~/.zsh_history
 setopt EXTENDED_HISTORY
 setopt autocd
+setopt sharehistory
+setopt appendhistory
+setopt sharehistory
+setopt incappendhistory
+
 autoload -U compinit; compinit
 
 # fuzzy-complete search for ^R and friends
