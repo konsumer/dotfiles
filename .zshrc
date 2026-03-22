@@ -42,3 +42,6 @@ source ~/.venv/bin/activate
 
 # user-paths
 export PATH="${PATH}:${HOME}/bin::${HOME}/.local/bin"
+
+# makes GPT-signing of git work on mac
+export GPG_TTY=$(tty)
