@@ -11,6 +11,9 @@ setopt incappendhistory
 
 autoload -U compinit; compinit
 
+# keep your secret env-vars and stuff here (chmod 600 ~/.secrets)
+[ -s ~/.secrets ] && . ~/.secrets
+
 # fuzzy-complete search for ^R and friends
 source <(fzf --zsh)
 
