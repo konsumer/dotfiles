@@ -37,8 +37,8 @@ if ! command -v bat >/dev/null 2>&1; then
 	alias bat="batcat"
 fi
 
-# always mac-names for clipboard manipuation
-if command -v xclip >/dev/null 2>&1; then
-	alias pbcopy='xclip -selection clipboard'
-	alias pbpaste='xclip -selection clipboard -o'
-fi
+# global venv makes python easier
+source ~/.venv/bin/activate
+
+# user-paths
+export PATH="${PATH}:${HOME}/bin::${HOME}/.local/bin"

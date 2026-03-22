@@ -64,13 +64,16 @@ echo "Installing fonts"
 
 mkdir -p "${FONT_DIR}"
 cd /tmp
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip
+curl https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip -o FiraCode.zip
 unzip FiraCode.zip
 cp FiraCodeNerdFont*.ttf "${FONT_DIR}"
 
 if command -v fc-cache >/dev/null 2>&1; then
   fc-cache -fv "${FONT_DIR}"
 fi
+
+# /opt is current-user programs (at least managed by them)
+sudo chown -R $USER /opt
 
 echo "Basic Installation complete!"
 
@@ -102,7 +105,7 @@ python3 -m venv "${VENV_SHARED}"
 [ -s "${VENV_SHARED}/bin/activate" ] && \. "${VENV_SHARED}/bin/activate"
 
 echo "Installing emscripten"
-sudo git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
+git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
 cd /opt/emsdk
 ./emsdk install latest
 ./emsdk activate latest
