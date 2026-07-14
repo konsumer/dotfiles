@@ -1,3 +1,18 @@
+// if you have noctalia, it's a nice general bar, but feel free to replace with another
+spawn-sh-at-startup "qs -c noctalia-shell"
+
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots"
+
+environment {
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "gtk3"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+}
+
 input {
     focus-follows-mouse
     workspace-auto-back-and-forth
@@ -63,19 +78,6 @@ gestures {
     }
 }
 
-spawn-sh-at-startup "qs -c noctalia-shell"
-prefer-no-csd
-screenshot-path "~/Pictures/Screenshots"
-
-environment {
-    ELECTRON_OZONE_PLATFORM_HINT "auto"
-    QT_QPA_PLATFORM "wayland"
-    QT_QPA_PLATFORMTHEME "gtk3"
-    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
-    XDG_CURRENT_DESKTOP "niri"
-    XDG_SESSION_TYPE "wayland"
-}
-
 cursor {
     hide-after-inactive-ms 1000
 }
@@ -98,9 +100,11 @@ binds {
     Mod+L hotkey-overlay-title="Lock Screen" {
         spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"
     }
-    Mod+S hotkey-overlay-title="Trigger Screensaver" {
-        spawn "alacritty" "--class" "niri-screensaver" "-e" "niri-screensaver"
-    }
+
+    // You can do terminal-running key-binds like this
+    // Mod+S hotkey-overlay-title="Trigger Screensaver" {
+    //     spawn "alacritty" "--class" "niri-screensaver" "-e" "niri-screensaver"
+    // }
 
 
     // ─── Media Controls ───
