@@ -1,6 +1,6 @@
 This is my dotfiles. YMMV.
 
-If you are not me, and want to actually use this, I recommend forking it to your own github account, and edting ~/dotfiles/.git/config:
+If you are not me, and want to actually use this, I recommend forking it to your own github account, and editing ~/dotfiles/.git/config:
 
 ```ini
 [remote "origin"]
@@ -21,7 +21,7 @@ If you want my full setup (on mac or linux):
 curl -sS https://raw.githubusercontent.com/konsumer/dotfiles/refs/heads/main/install.sh | bash
 ```
 
-I also included tardec/tarenc for saving secrets somewhere else, encrtpyed:
+I also included tardec/tarenc for saving secrets somewhere else, encrypted:
 
 ```sh
 # build file
