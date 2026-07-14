@@ -26,28 +26,35 @@ case "$(uname)" in
     echo "Detected Linux"
 
     FONT_DIR=~/.local/share/fonts/
-    
+
+    # eza is installed separately (best-effort) since it is missing from
+    # older repos (Debian 12 / Ubuntu 22.04). Everything else is "core".
     # Detect package manager and install packages
     if command -v apt >/dev/null 2>&1; then
       echo "Using apt package manager"
       sudo apt update
-      sudo apt install -y git zsh neovim oathtool stow eza bat fzf xclip
-      
+      sudo apt install -y git zsh neovim oathtool stow bat fzf xclip unzip curl python3-venv
+      sudo apt install -y eza || echo "eza unavailable in apt repos (needs Debian 13+/Ubuntu 24.04+); skipping"
+
     elif command -v pacman >/dev/null 2>&1; then
       echo "Using pacman package manager"
-      sudo pacman -Sy --noconfirm git zsh neovim oathtool stow eza bat fzf xclip
-      
+      sudo pacman -Sy --noconfirm git zsh neovim oath-toolkit stow bat fzf xclip unzip curl python
+      sudo pacman -S --noconfirm eza || echo "eza unavailable; skipping"
+
     elif command -v dnf >/dev/null 2>&1; then
       echo "Using dnf package manager"
-      sudo dnf install -y git zsh neovim oathtool stow eza bat fzf xclip
-      
+      sudo dnf install -y git zsh neovim oathtool stow bat fzf xclip unzip curl python3
+      sudo dnf install -y eza || echo "eza unavailable; skipping"
+
     elif command -v yum >/dev/null 2>&1; then
       echo "Using yum package manager"
-      sudo yum install -y git zsh neovim oathtool stow eza bat fzf xclip
-      
+      sudo yum install -y git zsh neovim oathtool stow bat fzf xclip unzip curl python3
+      sudo yum install -y eza || echo "eza unavailable; skipping"
+
     elif command -v zypper >/dev/null 2>&1; then
       echo "Using zypper package manager"
-      sudo zypper install -y git zsh neovim oathtool stow eza bat fzf xclip
+      sudo zypper install -y git zsh neovim oath-toolkit stow bat fzf xclip unzip curl python3
+      sudo zypper install -y eza || echo "eza unavailable; skipping"
     else
       echo "Error: No supported package manager found"
       exit 1
@@ -64,8 +71,9 @@ echo "Installing fonts"
 
 mkdir -p "${FONT_DIR}"
 cd /tmp
-curl https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip -o FiraCode.zip
-unzip FiraCode.zip
+# -fL: fail on HTTP errors and follow GitHub's redirect to the asset
+curl -fL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip -o FiraCode.zip
+unzip -o FiraCode.zip
 cp FiraCodeNerdFont*.ttf "${FONT_DIR}"
 
 if command -v fc-cache >/dev/null 2>&1; then
@@ -73,43 +81,49 @@ if command -v fc-cache >/dev/null 2>&1; then
 fi
 
 # /opt is current-user programs (at least managed by them)
-sudo chown -R $USER /opt
+sudo chown -R "$(id -un)" /opt
 
 echo "Basic Installation complete!"
 
 echo "Installing zsh plugins"
 mkdir -p ~/.zsh
-git clone https://github.com/zdharma-continuum/fast-syntax-highlighting ~/.zsh/fast-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+[ -d ~/.zsh/fast-syntax-highlighting ] || git clone https://github.com/zdharma-continuum/fast-syntax-highlighting ~/.zsh/fast-syntax-highlighting
+[ -d ~/.zsh/zsh-autosuggestions ] || git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 echo "Installing starship"
-curl -sS https://starship.rs/install.sh | sh
+curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
 echo "Changing shell to zsh"
-chsh -s "$(which zsh)"
-
-echo "Installing rust"
-curl -Ss https://sh.rustup.rs | sh
-. "$HOME/.cargo/env"
-
-echo "Installing nvm (nodejs)"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm install node
-nvm use node
+ZSH_BIN="$(command -v zsh)"
+chsh -s "$ZSH_BIN" || echo "Could not change shell automatically; run: chsh -s $ZSH_BIN"
 
 echo "Setting up local python venv"
 export VENV_SHARED="${HOME}/.venv"
 python3 -m venv "${VENV_SHARED}"
 [ -s "${VENV_SHARED}/bin/activate" ] && \. "${VENV_SHARED}/bin/activate"
 
-echo "Installing emscripten"
-git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
-cd /opt/emsdk
-./emsdk install latest
-./emsdk activate latest
-source ./emsdk_env.sh
+# Heavy toolchains (rust, node, emscripten). Set DOTFILES_SKIP_EXTRAS=1 to skip.
+if [ -z "${DOTFILES_SKIP_EXTRAS:-}" ]; then
+  echo "Installing rust"
+  curl -Ss https://sh.rustup.rs | sh -s -- -y
+  . "$HOME/.cargo/env"
+
+  echo "Installing nvm (nodejs)"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  nvm install node
+  nvm use node
+
+  echo "Installing emscripten"
+  [ -d /opt/emsdk ] || git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
+  cd /opt/emsdk
+  ./emsdk install latest
+  ./emsdk activate latest
+  source ./emsdk_env.sh
+else
+  echo "DOTFILES_SKIP_EXTRAS set; skipping rust/node/emscripten"
+fi
 
 echo "Setting up stowed dotfiles"
 DOTFILES_DIR="$HOME/dotfiles"
