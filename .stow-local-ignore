@@ -21,3 +21,29 @@ _darcs
 
 install.sh
 
+# Atomic-write leftovers (e.g. foo.tmp.<pid>.<hash>) from any package
+.+\.tmp\.\d+\..+
+
+# Claude Code machine-local / secret files — never symlink these into ~/.claude
+^/\.claude/settings\.local\.json.*
+^/\.claude/\.credentials\.json.*
+^/\.claude/backups
+^/\.claude/cache
+^/\.claude/daemon.*
+^/\.claude/downloads
+^/\.claude/file-history
+^/\.claude/history\.jsonl
+^/\.claude/jobs
+^/\.claude/paste-cache
+^/\.claude/plans
+^/\.claude/plugins
+^/\.claude/projects
+^/\.claude/sessions
+^/\.claude/session-env
+^/\.claude/shell-snapshots
+^/\.claude/statsig
+^/\.claude/tasks
+^/\.claude/todos
+^/\.claude/\.last.*
+^/\.claude/mcp-needs-auth-cache\.json
+

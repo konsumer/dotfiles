@@ -1,0 +1,8 @@
+{
+  "model": "sonnet",
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "theme": "dark",
+  "tui": "fullscreen"
+}

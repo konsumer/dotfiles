@@ -1,0 +1,21 @@
+# ~/.claude holds secrets (.credentials.json), auth caches, conversation
+# history, memory, and per-machine state. Deny everything by default, then
+# allow-list only the safe, shareable config below.
+#
+# "/*" ignores only the top level of ~/.claude, so re-including a directory
+# (e.g. "!/formatting/") also picks up everything inside it.
+# To track a new config file/dir, add a matching "!/..." line.
+
+/*
+
+# --- shareable defaults (safe to commit) ---
+!/.gitignore
+!/CLAUDE.md
+!/settings.json
+!/keybindings.json
+!/statusline.sh
+!/formatting/
+!/agents/
+!/commands/
+!/skills/
+!/output-styles/
