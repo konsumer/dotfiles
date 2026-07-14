@@ -36,3 +36,10 @@ tardec /mnt/BACKUP/secrets.enc.tgz && mv secrets/{.,}* ~/ && rm -rf secrets
 These will be in your path, once you are using my `~/.zshrc`.
 
 You can use this to backup any secrets that should not be checked in to github.
+
+## niri (Linux desktop)
+
+`.config/niri/config.kdl` is my [niri](https://github.com/YaLTeR/niri) scrollable-tiling
+Wayland setup. It is Linux-only and does nothing on mac (or without niri installed) —
+it just sits dormant. `install.sh` does not install niri, so this is opt-in: delete
+`.config/niri` if you don't want it.
