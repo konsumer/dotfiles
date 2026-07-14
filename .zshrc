@@ -31,7 +31,10 @@ eval "$(starship init zsh)"
 # lil aliases I use
 alias grep='grep --color'
 alias egrep='egrep --color'
-alias ls='eza --icons=auto'
+# eza is a nicer ls, but missing from older repos (Debian 12 / Ubuntu 22.04)
+if command -v eza >/dev/null 2>&1; then
+	alias ls='eza --icons=auto'
+fi
 alias vim='nvim'
 alias vi='nvim'
 
