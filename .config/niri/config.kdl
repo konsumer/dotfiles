@@ -14,7 +14,7 @@ environment {
 }
 
 input {
-    focus-follows-mouse
+    // focus-follows-mouse
     workspace-auto-back-and-forth
 }
 
