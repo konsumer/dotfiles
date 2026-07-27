@@ -6,7 +6,6 @@ setopt EXTENDED_HISTORY
 setopt autocd
 setopt sharehistory
 setopt appendhistory
-setopt sharehistory
 setopt incappendhistory
 
 autoload -U compinit; compinit
@@ -31,12 +30,18 @@ eval "$(starship init zsh)"
 # lil aliases I use
 alias grep='grep --color'
 alias egrep='egrep --color'
+alias vim='nvim'
+alias vi='nvim'
+
 # eza is a nicer ls, but missing from older repos (Debian 12 / Ubuntu 22.04)
 if command -v eza >/dev/null 2>&1; then
 	alias ls='eza --icons=auto'
 fi
-alias vim='nvim'
-alias vi='nvim'
+
+# show ref for apt on non-deb platforms
+if ! command -v apt >/dev/null 2>&1; then
+	alias apt='bat ~/NOTES/packages.sh'
+fi
 
 # always bat for synhi cat
 if ! command -v bat >/dev/null 2>&1; then
@@ -48,6 +53,3 @@ source ~/.venv/bin/activate
 
 # user-paths
 export PATH="${PATH}:${HOME}/bin::${HOME}/.local/bin"
-
-# makes GPT-signing of git work on mac
-export GPG_TTY=$(tty)
