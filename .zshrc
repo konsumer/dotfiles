@@ -53,3 +53,6 @@ source ~/.venv/bin/activate
 
 # user-paths
 export PATH="${PATH}:${HOME}/bin::${HOME}/.local/bin"
+
+# standard location for wasi-sdk
+export WASI_SDK_PATH=/opt/wasi-sdk
