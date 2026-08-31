@@ -43,16 +43,33 @@ if ! command -v apt >/dev/null 2>&1; then
 	alias apt='bat ~/NOTES/packages.sh'
 fi
 
+alias pi=omp
+alias pit="cd $(mktemp -d) && omp"
+
 # always bat for synhi cat
 if ! command -v bat >/dev/null 2>&1; then
 	alias bat="batcat"
 fi
 
 # global venv makes python easier
-source ~/.venv/bin/activate
+# source ~/.venv/bin/activate
 
 # user-paths
 export PATH="${PATH}:${HOME}/bin::${HOME}/.local/bin"
 
 # standard location for wasi-sdk
 export WASI_SDK_PATH=/opt/wasi-sdk
+
+# makes GPT-signing of git work on mac
+export GPG_TTY=$(tty)
+
+# homebrew openjdk
+export PATH="/opt/homebrew/opt/openjdk@25/bin:$PATH"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk@25/include"
+
+# bun completions
+[ -s "~/.bun/_bun" ] && source "~/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
